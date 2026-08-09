@@ -1,0 +1,15 @@
+[gcode_macro G28]
+# G28 replacement for beacon
+
+variable_target_extruder: 0
+variable_beacon_target_extruder: 0
+gcode:
+	{% if "x" not in printer.toolhead.homed_axes or "y" not in printer.toolhead.homed_axes or "z" not in printer.toolhead.homed_axes %}
+	{% if target_extruder > beacon_target_extruder %}
+	SAVE_GCODE_STATE NAME=G28
+	
+	M106 S255
+	M109 S{beacon_target_extruder}
+
+
+    	RESTORE_GCODE_STATE NAME=STATE_G28
